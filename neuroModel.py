@@ -9,7 +9,7 @@ INPUTS,OUTPUTS = [],[]
 T1,T2,T3,T4 = 1,2,4,8
 GAIN = 1
 
-def initNeuroModel(dimension, cmatrix, pmatrix):
+def initNeuroModel(dimension, cmatrix, pmatrix, derivMatrix):
     global BIASES, WEIGHTS, DIMENSION, INPUTS, OUTPUTS
     DIMENSION = dimension
     BIASES = numpy.zeros([dimension, dimension])
@@ -22,15 +22,14 @@ def initNeuroModel(dimension, cmatrix, pmatrix):
             for k in range(dimension - 1):
                 for l in range(dimension - 1):
                     WEIGHTS[i][j][k][l] = calculateWeight(i,j,k,l)
-    updateModelState()
+    updateModelState(derivMatrix)
 
-def updateModelState():
+def updateModelState(derivMatrix):
     global INPUTS, OUTPUTS, DIMENSION
     for i in range(DIMENSION - 1):
         for j in range(DIMENSION - 1):
-            INPUTS[i][j] = BIASES[i][j] + multInputWeight(i,j)
+            INPUTS[i][j] = BIASES[i][j] + multInputWeight(i,j) + derivMatrix[i][j]
             OUTPUTS[i][j] = expoutput(INPUTS[i][j])
-    print(INPUTS, OUTPUTS)
 
 def expoutput(inputValue):
     return 1.0/(1+math.exp(-GAIN*inputValue))
