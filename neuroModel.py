@@ -36,7 +36,6 @@ def expoutput(inputValue):
     return 1.0/(1+math.exp(-GAIN*inputValue))
 
 def multInputWeight(i,j):
-    global DIMENSION
     result = sum([OUTPUTS[i,k]*WEIGHTS[i][j][i][k] for k in range(DIMENSION - 1) if j != k])
     return result
 
@@ -44,7 +43,7 @@ def calculateWeight(x1,y1,x2,y2):
     return -T3 * cron(x1, x2) - T3 * cron(y1, y2) + T3 * cron(x1, y2) + T3 * cron(y1, x2) + T4 * cron(x1, x2) * cron(y1, y2)
 
 def calculateBias(x,y,c,p):
-    return -T1/2*c * cron(x, y) * cron(x, y) - T2 / 2 * p * cron(x, y) - T4 / 2
+    return -T1/2*c * cron(x, y) - T2 / 2 * p * cron(x, y) - T4 / 2
 
 def cron(a, b):
     return 1 if a==b else 0
